@@ -243,7 +243,6 @@ class Cube:
             move = annotation_to_move(m)
             self.twist_cube(move)
 
-        print(algorithm)
 
 
 if __name__ == '__main__':

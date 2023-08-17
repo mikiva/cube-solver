@@ -38,13 +38,14 @@ def test_solve():
 def solve():
     cube = Cube(n=3)
     cube.show()
-    print("SHUFFLE")
+    print("=== SHUFFLING CUBE ===")
     cube.shuffle(l_rot=10, u_rot=25)
     cube.show()
 
-    print("SOLVING")
+    print("=== SOLVING CUBE ===")
     definition = cube.definition_string()
     algorithm = kociemba.solve(definition)
+    print("MOVES: ", algorithm)
     cube.solve_from_algorithm(algorithm)
 
     cube.show()
