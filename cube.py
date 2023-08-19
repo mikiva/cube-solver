@@ -1,5 +1,8 @@
 from random import randint, choice
-from helper import annotation_to_move
+
+import kociemba
+
+from helper import annotation_to_move, moves
 
 TOP = 0
 LEFT = 1
@@ -41,18 +44,19 @@ class Cube:
         self.cube = [[[c for x in range(self.n)] for y in range(self.n)] for c in self.colors]
 
     def shuffle(self, l_rot=5, u_rot=100):
-        moves = randint(l_rot, u_rot)
-        actions = [
-            ("h", 0),
-            ("h", 1),
-            ("v", 0),
-            ("v", 1),
-            ("s", 0),
-            ("s", 1),
-        ]
+        nbr_moves = randint(l_rot, u_rot)
+        #actions = [
+        #    ("h", 0),
+        #    ("h", 1),
+        #    ("v", 0),
+        #    ("v", 1),
+        #    ("s", 0),
+        #    ("s", 1),
+        #]
+        #moves
 
-        for i in range(moves):
-            a = choice(actions)
+        for i in range(nbr_moves):
+            a = choice(moves)
             if self.n % 2 != 0:
                 j = choice([i for i in range(self.n) if i != self.n // 2])
             else:
@@ -235,6 +239,11 @@ class Cube:
         l2 = '\n'.join(' '.join(str(self.cube[i][j]) for i in range(1, 5)) for j in range(len(self.cube[0])))
         l3 = '\n'.join(spacing + str(c) for c in self.cube[BOTTOM])
         print("{}\n\n{}\n\n{}".format(l1, l2, l3))
+
+    def get_solution(self):
+        definition = self.definition_string()
+        algorithm = kociemba.solve(definition)
+        return algorithm
 
     def solve_from_algorithm(self, algorithm):
         ms = algorithm.split(" ")
