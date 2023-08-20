@@ -2,7 +2,7 @@ from random import randint, choice
 
 import kociemba
 
-from helper import annotation_to_move, moves
+from helper import annotation_to_move, moves, faces
 
 TOP = 0
 LEFT = 1
@@ -13,11 +13,13 @@ BOTTOM = 5
 
 
 class Cube:
+    order = [TOP, RIGHT, FRONT, BOTTOM, LEFT, BACK]
+
     def __init__(self,
                  n=3,
                  # colors = ['w', 'o', 'g', 'r', 'b', 'y'],
-                 colors=["⬜", "🟧", "🟩", "🟥", "🟦", "🟨"],
-                 # colors=["U", "R", "F", "D", "L", "B"],
+                 #colors=["⬜", "🟧", "🟩", "🟥", "🟦", "🟨"],
+                 colors=["U", "L", "F", "R", "B", "D"],
                  state=None
                  ):
         if state is None:
@@ -56,7 +58,8 @@ class Cube:
         #moves
 
         for i in range(nbr_moves):
-            a = choice(moves)
+
+            a = choice(list(moves.values()))
             if self.n % 2 != 0:
                 j = choice([i for i in range(self.n) if i != self.n // 2])
             else:
@@ -195,14 +198,7 @@ class Cube:
     def stringify(self):
         return "".join([i for r in self.cube for s in r for i in s])
 
-    K = {
-        "⬜": "U",
-        "🟧": "L",
-        "🟩": "F",
-        "🟥": "R",
-        "🟦": "B",
-        "🟨": "D"
-    }
+
 
     # K = {
     #        "⬜": "⬜",
@@ -214,14 +210,14 @@ class Cube:
     #    }
 
     def definition_string(self, sep=False):
-        order = [TOP, RIGHT, FRONT, BOTTOM, LEFT, BACK]
         definition = []
-        for side in order:
+        for side in self.order:
             for s in self.cube[side]:
-                definition.append("".join([self.K[cc] for cc in s]))
+                definition.append("".join([cc for cc in s ]))
 
         if sep:
             return " ".join(definition)
+        print("".join(definition))
         return "".join(definition)
 
         # return "".join([i for r in self.cube for s in r for i in s])
@@ -234,15 +230,16 @@ class Cube:
         Output: None
         """
 
-        spacing = " " * (len(str(self.cube[0][0])) + 2)
-        l1 = '\n'.join(spacing + str(c) for c in self.cube[TOP])
-        l2 = '\n'.join(' '.join(str(self.cube[i][j]) for i in range(1, 5)) for j in range(len(self.cube[0])))
-        l3 = '\n'.join(spacing + str(c) for c in self.cube[BOTTOM])
-        print("{}\n\n{}\n\n{}".format(l1, l2, l3))
+        spacing = "\t\t"
+        l1 = '\n'.join(spacing + "".join(faces[f] for f in c) for c in self.cube[TOP])
+        l2 = '\n'.join(' '.join("".join(faces[f] for f in self.cube[i][j]) for i in range(1,5)) for j in range(len(self.cube[0])))
+        l3 = '\n'.join(spacing + "".join(faces[f] for f in c) for c in self.cube[BOTTOM])
+        print("{}\n{}\n{}".format(l1, l2, l3))
 
-    def get_solution(self):
+
+    def get_solution(self, target=None):
         definition = self.definition_string()
-        algorithm = kociemba.solve(definition)
+        algorithm = kociemba.solve(definition, patternstring=target)
         return algorithm
 
     def solve_from_algorithm(self, algorithm):
@@ -251,6 +248,7 @@ class Cube:
         for m in ms:
             move = annotation_to_move(m)
             self.twist_cube(move)
+
 
 
 

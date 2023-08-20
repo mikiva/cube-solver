@@ -6,6 +6,7 @@ name = "pypi"
 [packages]
 kociemba = "*"
 ursina = "*"
+bidict = "*"
 
 [dev-packages]
 

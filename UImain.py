@@ -4,7 +4,6 @@ from cube import Cube as RubiksCube
 from functools import partial
 import time
 
-
 app = Ursina()
 
 rubiks = None
@@ -127,7 +126,7 @@ def rotate_side(normal, direction=1, speed=1.0):
                                            curve=CURVE,
                                            interrupt=INTERRUPT)
 
-
+    # rubiks.twist_cube([moves[a]])
     return animated
 
 
@@ -173,7 +172,6 @@ def shuffle(speed=1):
     rubiks.show()
 
 
-
 last_animation = 0
 
 
@@ -201,9 +199,9 @@ def input(key):
     # print(key)
 
 
-def solve(speed=1):
+def solve(speed=1, target=None):
     global animations
-    algorithm = rubiks.get_solution()
+    algorithm = rubiks.get_solution(target=target)
     print(algorithm)
 
     for a in algorithm.split(" "):
@@ -259,9 +257,25 @@ solve_button.fit_to_text()
 init()
 EditorCamera()
 # combine_parent.on_click = spin
+#order = [TOP, RIGHT, FRONT, BOTTOM, LEFT, BACK]
 
 if __name__ == '__main__':
+    state = """
+    BFU FUF BUF
+    UUB BRD BBU
+    LRR FFU RBR      
+    DRD BDD DDL
+    RRD LLD FLF
+    LLU LBU FRL
+        """
+
+    state = "".join(state.split())
+    solve_cube = RubiksCube(n=3, state=state)
     rubiks = RubiksCube(n=3)
+
+    if state:
+        solve(speed=0, target=state)
+        #solve(speed=0, target=solve_cube.definition_string())
 
     window.size = (1200, 600)
     window.update_aspect_ratio()

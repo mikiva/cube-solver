@@ -35,15 +35,17 @@ def test_solve():
         print("error cube", cube.definition_string(sep=True))
         raise e
 
-def solve():
-    cube = Cube(n=3)
+def solve(state=None):
+    cube = Cube(n=3, state=state)
     cube.show()
-    print("=== SHUFFLING CUBE ===")
-    cube.shuffle(l_rot=10, u_rot=25)
-    cube.show()
+    if state is None:
+        print("=== SHUFFLING CUBE ===")
+        cube.shuffle(l_rot=10, u_rot=25)
+        cube.show()
 
     print("=== SOLVING CUBE ===")
     definition = cube.definition_string()
+    #print(cube.definition_string(sep=True))
     algorithm = kociemba.solve(definition)
     print("MOVES: ", algorithm)
     cube.solve_from_algorithm(algorithm)
@@ -60,8 +62,19 @@ def test_many():
             print("Failed on: ", i)
             raise e
 #
-
+#order = [TOP, RIGHT, FRONT, BOTTOM, LEFT, BACK]
 if __name__ == '__main__':
+
+    state="""
+                BFU FUF BUF
+RRD LLD FLF     LRR FFU RBR      UUB BRD BBU    LLU LBU FRL
+                DRD BDD DDL
+    """
+    #state=None
+
+    state = "".join(state.split())
+
     #test_solve()
     #test_many()
-    solve()
+    solve(state=state)
+    #solve()

@@ -1,12 +1,13 @@
-actions = [
-    ("h", 0), #LEFT
-    ("h", 1), #RIGHT
-    ("v", 0), #DOWN
-    ("v", 1), #UP
-    ("s", 0), #DOWN
-    ("s", 1), #UP
-]
+from bidict import bidict
 
+actions = [
+    ("h", 0),  # LEFT
+    ("h", 1),  # RIGHT
+    ("v", 0),  # DOWN
+    ("v", 1),  # UP
+    ("s", 0),  # DOWN
+    ("s", 1),  # UP
+]
 
 moves = {
     "U": ("h", 0, 0),
@@ -23,6 +24,23 @@ moves = {
     "B'": ("s", 1, 0),
 }
 
+faces = {
+    "U": "⬜",
+    "⬜": "U",
+    "L": "🟧",
+    "🟧": "L",
+    "F": "🟩",
+    "🟩": "F",
+    "R": "🟥",
+    "🟥": "R",
+    "B": "🟦",
+    "🟦": "B",
+    "D": "🟨",
+    "🟨": "D"
+}
+
+
+
 def annotation_to_move(annotation):
     m = []
     if "2" in annotation:
@@ -31,4 +49,3 @@ def annotation_to_move(annotation):
     else:
         m.append(moves[annotation])
     return m
-
